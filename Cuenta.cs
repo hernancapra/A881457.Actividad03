@@ -1,21 +1,25 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace A881457.Actividad03
+namespace _888067.Actividad03
 {
     class Cuenta
     {
         public int Codigo { get; set; }
+
         public string Nombre { get; set; }
+
         public string Tipo { get; set; }
+
         public Cuenta()
         {
 
         }
+
         public Cuenta(string linea)
         {
             var datos = linea.Split('|');
@@ -30,12 +34,10 @@ namespace A881457.Actividad03
             var cuenta = new Cuenta();
 
             Console.WriteLine();
-            Console.WriteLine("Se desea ingresar una nueva cuenta al Plan de Cuentas....");
-
+            Console.WriteLine("Se desea ingresar una nueva cuenta al Plan de Cuentas...");
             cuenta.Codigo = IngresarCodigoCuenta(obligatorio: true);
-            cuenta.Nombre = IngresarNombreCuenta("Ingrese el nombre de la cuenta.");
-            Console.WriteLine();
-            cuenta.Tipo = IngresarTipoCuenta("Ingrese el tipo de cuenta (Activo, Pasivo o PatrimonioNeto).");
+            cuenta.Nombre = IngresarNombreCuenta("Ingrese el nombre de la cuenta: ");
+            cuenta.Tipo = IngresarTipoCuenta("Ingrese el tipo de cuenta (Activo, Pasivo o PatrimonioNeto): ");
 
             return cuenta;
         }
@@ -70,14 +72,14 @@ namespace A881457.Actividad03
 
             modelo.Codigo = IngresarCodigoCuenta(obligatorio: false);
             modelo.Nombre = IngresarNombreCuenta("Ingrese el nombre de la cuenta que desea buscar: ", obligatorio: false);
-            modelo.Tipo = IngresarTipoCuenta("Ingrese el tipo de la cuenta que desea buscar: ", obligatorio: false);
+            modelo.Tipo = IngresarTipoCuenta("Ingrese el tipo de cuenta que desea buscar: ", obligatorio: false);
 
             return modelo;
         }
 
         private static int IngresarCodigoCuenta(bool obligatorio = true)
         {
-            var titulo = "Ingrese el código de la cuenta (mayor a 11 y menor a 35)";
+            var titulo = "Ingrese el código de la cuenta (> a 1)";
 
             if (!obligatorio)
             {
@@ -96,21 +98,22 @@ namespace A881457.Actividad03
 
                 if (!int.TryParse(codigoIngreso, out int codigo))
                 {
-                    Console.WriteLine("No ingresó un código válido.");
+                    Console.WriteLine("No se ingresó un código válido.");
                     continue;
                 }
 
-                if (codigo < 11 || codigo > 34)
+                if (codigo < 1)
                 {
-                    Console.WriteLine("No ingresó un código válido.");
+                    Console.WriteLine("No se ingresó un código válido.");
                     continue;
                 }
 
-                if (PlanDeCuentas.Existe(codigo))
+                if (obligatorio && PlanDeCuentas.Existe(codigo))
                 {
                     Console.WriteLine("El código ingresado ya existe en el Plan de Cuentas.");
                     continue;
                 }
+
                 return codigo;
 
             } while (true);
@@ -122,7 +125,6 @@ namespace A881457.Actividad03
 
             do
             {
-                Console.WriteLine();
                 Console.WriteLine(titulo);
                 nombreIngreso = Console.ReadLine();
 
@@ -131,23 +133,23 @@ namespace A881457.Actividad03
                     return null;
                 }
 
-                if (obligatorio && string.IsNullOrWhiteSpace(nombreIngreso))
+                if (string.IsNullOrWhiteSpace(nombreIngreso))
                 {
-                    Console.WriteLine("No ingresó un nombre válido. Por favor, inténtelo nuevamente.");
+                    Console.WriteLine("No se ingresó un nombre válido. Por favor, intentelo nuevamente.");
                     continue;
                 }
 
                 if (nombreIngreso.Any(c => Char.IsDigit(c)))
                 {
-                    Console.WriteLine("El nombre de la cuenta no puede contener números. Por favor, inténtelo nuevamente.");
+                    Console.WriteLine("El nombre de la cuenta no puede contener números. Por favor, intentelo nuevamente.");
                     continue;
                 }
-
-                break;
+                else
+                {
+                    return nombreIngreso;
+                }
 
             } while (true);
-
-            return nombreIngreso;
         }
 
         private static string IngresarTipoCuenta(string titulo, bool obligatorio = true)
@@ -166,72 +168,51 @@ namespace A881457.Actividad03
 
                 if (obligatorio && string.IsNullOrWhiteSpace(tipoIngreso))
                 {
-                    Console.WriteLine("No ingresó un tipo válido.");
+                    Console.WriteLine("No se ingresó un tipo válido.");
                     continue;
                 }
 
                 if ((tipoIngreso.ToUpper() == "ACTIVO") || (tipoIngreso.ToUpper() == "PASIVO") || (tipoIngreso.ToUpper() == "PATRIMONIONETO"))
                 {
                     return tipoIngreso;
+
                 }
                 else
                 {
                     Console.WriteLine("El tipo de cuenta debe ser alguno de los siguientes: Activo, Pasivo o PatrimonioNeto.");
                     continue;
                 }
+
             } while (true);
         }
 
         public void MostrarDatos()
         {
             Console.WriteLine();
-            Console.WriteLine($"Código de cuenta: {Codigo}");
-            Console.WriteLine($"Nombre de cuenta: {Nombre}");
+            Console.WriteLine($"Codigo de cuenta: {Codigo}");
+            Console.WriteLine($"Nombre de la cuenta: {Nombre}");
             Console.WriteLine($"Tipo de cuenta: {Tipo}");
             Console.WriteLine();
         }
 
         public void Modificar()
         {
-            Console.WriteLine($"Nombre de cuenta: {Nombre}. Presione M para modificar o cualquier otra tecla para continuar.");
+            Console.WriteLine($"Nombre de la cuenta: {Nombre}. Presione M para modificar o cualquier otra tecla para continuar.");
             var key = Console.ReadKey(true);
 
             if (key.Key == ConsoleKey.M)
             {
-                Nombre = Ingreso("Ingrese el nuevo nombre de la cuenta: ");
+                Nombre = IngresarNombreCuenta("Ingrese el nuevo nombre de la cuenta: ");
             }
 
-            Console.WriteLine($"Tipo de cuenta: {Tipo}. Presione M para modificar o cualquier otra tecla para continuar.");
-            key = Console.ReadKey(true);
+            Console.WriteLine($"Tipo de cuenta: {Tipo}. Presione K para modificar o cualquier otra tecla para continuar.");
+            var tecla = Console.ReadKey(true);
 
-            if (key.Key == ConsoleKey.M)
+            if (tecla.Key == ConsoleKey.K)
             {
-                do
-                {
-                    var tipoIngreso = Console.ReadLine();
-
-                    if (string.IsNullOrWhiteSpace(tipoIngreso))
-                    {
-                        Console.WriteLine("No ingresó un tipo válido.");
-                        break;
-                    }
-
-                    if (tipoIngreso.Any(Char.IsDigit))
-                    {
-                        Console.WriteLine("No ingresó un tipo válido");
-                    }
-
-                    if ((tipoIngreso.ToUpper() == "ACTIVO") || (tipoIngreso.ToUpper() == "PASIVO") || (tipoIngreso.ToUpper() == "PATRIMONIONETO"))
-                    {
-                        Tipo = tipoIngreso;
-                    }
-                    else
-                    {
-                        Console.WriteLine("El tipo de cuenta debe ser alguno de los siguientes: Activo, Pasivo o PatrimonioNeto.");
-                        break;
-                    }
-                } while (true);
+                Tipo = IngresarTipoCuenta("Ingrese el nuevo tipo de cuenta: ");
             }
+
             PlanDeCuentas.GrabarCuenta();
         }
 
@@ -247,13 +228,13 @@ namespace A881457.Actividad03
 
                 if (string.IsNullOrWhiteSpace(ingreso))
                 {
-                    Console.WriteLine("No ingresó una opción válida.");
+                    Console.WriteLine("No se ingresó una opción válida.");
                     break;
                 }
 
                 if (ingreso.Any(c => Char.IsDigit(c)))
                 {
-                    Console.WriteLine("El nombre de la cuenta no puede tener números.");
+                    Console.WriteLine("El nombre de la cuenta no puede contener números. Por favor, intentelo nuevamente.");
                     break;
                 }
 

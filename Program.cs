@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace A881457.Actividad03
+namespace _888067.Actividad03
 {
     class Program
     {
@@ -17,39 +17,37 @@ namespace A881457.Actividad03
             {
                 Console.WriteLine();
                 Console.WriteLine("MENU PRINCIPAL");
-                Console.WriteLine("--------------");
-                Console.WriteLine("1. Alta cuenta");
-                Console.WriteLine("2. Baja cuenta");
-                Console.WriteLine("3. Modificación cuenta");
+                Console.WriteLine();
+                Console.WriteLine("1. Alta de cuenta");
+                Console.WriteLine("2. Baja de cuenta");
+                Console.WriteLine("3. Modificación de cuenta");
                 Console.WriteLine("9. Salir");
                 Console.WriteLine();
-
-                Console.WriteLine("Ingrese una opción del menú y presione [ENTER].");
+                Console.WriteLine("Elija una opción del menú y presione [ENTER] para continuar.");
 
                 var ingreso = Console.ReadLine();
                 switch (ingreso)
                 {
                     case "1":
-                        AltaCuenta(); //Se da de alta una cuenta con código, nombre y tipo.
+                        AltaCuenta();
                         break;
 
                     case "2":
-                        BajaCuenta(); //Se busca por nombre y tipo de cuenta. NO por código.
+                        BajaCuenta();
                         break;
 
                     case "3":
-                        ModificarCuenta(); //Se busca por nombre y tipo de cuenta. NO por código.
+                        ModificarCuenta();
                         break;
 
                     case "9":
-                        salir = true; //Salir de la consola.
+                        salir = true;
                         break;
 
                     default:
                         Console.WriteLine("No se ingresó ninguna opción del menú.");
                         break;
                 }
-
             } while (!salir);
         }
 
@@ -57,6 +55,7 @@ namespace A881457.Actividad03
         {
             var cuenta = Cuenta.IngresarNueva();
             PlanDeCuentas.Agregar(cuenta);
+            Console.WriteLine("Se dió de alta la cuenta ingresada.");
         }
 
         private static void BajaCuenta()
@@ -76,7 +75,7 @@ namespace A881457.Actividad03
             if (respuesta.Key == ConsoleKey.S)
             {
                 PlanDeCuentas.Baja(cuenta);
-                Console.WriteLine("La cuenta seleccionada se dió de baja correctamente.");
+                Console.WriteLine("Se dió de baja la cuenta seleccionada.");
             }
         }
 
@@ -89,15 +88,6 @@ namespace A881457.Actividad03
             }
             cuenta.MostrarDatos();
             cuenta.Modificar();
-        }
-
-        private static void BuscarCuenta()
-        {
-            Cuenta cuenta = PlanDeCuentas.SeleccionarCuenta();
-            if (cuenta != null)
-            {
-                cuenta.MostrarDatos();
-            }            
         }
     }
 }

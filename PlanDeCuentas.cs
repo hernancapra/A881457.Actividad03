@@ -1,13 +1,13 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
-namespace A881457.Actividad03
+namespace _888067.Actividad03
 {
-    class PlanDeCuentas
+    static class PlanDeCuentas
     {
         private static readonly Dictionary<int, Cuenta> DicCuentas;
         const string nombreArchivo = "Plan de Cuentas.txt";
@@ -36,6 +36,7 @@ namespace A881457.Actividad03
         {
             DicCuentas.Add(cuenta.Codigo, cuenta);
             GrabarCuenta();
+
         }
 
         public static Cuenta SeleccionarCuenta()
@@ -50,7 +51,7 @@ namespace A881457.Actividad03
                 }
             }
 
-            Console.WriteLine("No se encontró la cuenta seleccionada.");
+            Console.WriteLine("No se encontró la cuenta que desea buscar.");
             return null;
         }
 
